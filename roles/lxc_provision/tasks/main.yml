@@ -1,0 +1,43 @@
+---
+# tasks file for zephyr82.proxmox.lxc_provision
+
+- name: Show debug message about the task being executed
+  ansible.builtin.debug:
+    msg: "Provisioning LXC container '{{ container.hostname }}' on Proxmox node '{{ container.node }}'"
+
+- name: Ensure proxmox_ca_path and proxmox_validate_certs are mutually exclusive
+  ansible.builtin.assert:
+    that: not (proxmox_ca_path is defined and proxmox_validate_certs is defined)
+    fail_msg: >-
+      'proxmox_ca_path' and 'proxmox_validate_certs' are mutually exclusive,
+      set either one but not both.
+
+- name: Create container on Proxmox
+  community.proxmox.proxmox:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_token_id: "{{ proxmox_api_token_id | default(omit) }}"
+    api_token_secret: "{{ proxmox_api_secret | default(omit) }}"
+    ca_path: "{{ proxmox_ca_path | default(omit, true) }}"
+    node: "{{ container.node }}"
+    hostname: "{{ container.hostname }}"
+    ostemplate: "{{ container.ostemplate }}"
+    ostype: "{{ container.ostype }}"
+    storage: "{{ container.storage }}"
+    cores: "{{ container.cores }}"
+    memory: "{{ container.memory }}"
+    mount_volumes: "{{ container.mount_volumes | default(omit) }}"
+    swap: "{{ container.swap }}"
+    searchdomain: "{{ container.searchdomain | default(omit) }}"
+    disk: "{{ container.disk }}"
+    netif: "{{ container.netif }}"
+    password: "{{ container.password | default(omit) }}"
+    onboot: "{{ container.onboot | default(false) }}"
+    startup: "{{ container.startup | default(omit) }}"
+    pubkey: "{{ lookup('file', proxmox_pubkey_file) | default(omit) }}"
+    features: "{{ container.features | default(omit) }}"
+    mounts: "{{ container.mounts | default(omit) }}"
+    state: present
+    tags: "{{ container.tags | default(omit) }}"
+    validate_certs: "{{ omit if proxmox_ca_path | default('', true) | trim != '' else (proxmox_validate_certs | default(false)) }}"
+  delegate_to: localhost

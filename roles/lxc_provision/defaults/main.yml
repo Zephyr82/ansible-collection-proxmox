@@ -1,0 +1,5 @@
+---
+# defaults file for zephyr82.proxmox.lxc_provision
+# 'lxc_provision_validate_certs' intentionally has no default here:
+# it is mutually exclusive with 'lxc_provision_ca_path', so it must stay
+# undefined unless the user sets it explicitly (the assert task relies on that).

@@ -1,0 +1,102 @@
+---
+# argument spec file for zephyr82.proxmox.lxc_provision
+
+argument_specs:
+  main:
+    short_description: Provisions an LXC container on a Proxmox VE node.
+    description:
+      - Creates an LXC container on a Proxmox VE cluster via the community.proxmox module.
+    options:
+      proxmox_api_host:
+        type: str
+        required: true
+        description: Hostname or IP of the Proxmox API endpoint.
+      proxmox_api_user:
+        type: str
+        required: true
+        description: API user, for example root@pam.
+      proxmox_api_token_id:
+        type: str
+        description: API token id used instead of a password.
+      proxmox_api_secret:
+        type: str
+        description: Secret of the API token.
+        no_log: true
+      proxmox_ca_path:
+        type: str
+        description:
+          - Path to a CA bundle used to verify the Proxmox API endpoint.
+          - Mutually exclusive with O(proxmox_validate_certs), enforced by an assert task.
+      proxmox_validate_certs:
+        type: bool
+        description:
+          - Whether the Proxmox API TLS certificate is validated.
+          - Mutually exclusive with O(proxmox_ca_path), enforced by an assert task.
+      container.hostname:
+        type: str
+        required: true
+        description: Hostname of the container.
+      container.ostemplate:
+        type: str
+        required: true
+        description: OS template used for the container.
+      container.ostype:
+        type: str
+        required: true
+        description: OS type of the container, for example debian.
+      container.storage:
+        type: str
+        required: true
+        description: Storage pool for the container disk.
+      container.cores:
+        type: int
+        required: true
+        description: Number of CPU cores.
+      container.memory:
+        type: int
+        required: true
+        description: Memory in MB.
+      container.swap:
+        type: int
+        required: true
+        description: Swap size in MB.
+      container.disk:
+        type: str
+        required: true
+        description: Disk size, for example "8".
+      container.netif:
+        type: dict
+        required: true
+        description: Network interfaces of the container.
+      container.mount_volumes:
+        type: list
+        elements: str
+        description: Additional mount volumes.
+      container.searchdomain:
+        type: str
+        description: Search domain of the container.
+      container.password:
+        type: str
+        description: Root password of the container.
+        no_log: true
+      container.onboot:
+        type: bool
+        default: false
+        description: Whether the container starts on boot.
+      container.startup:
+        type: dict
+        description: Startup ordering of the container.
+      proxmox_pubkey_file:
+        type: str
+        description: Path to a public key file injected into the container.
+      container.features:
+        type: dict
+        description: Container features, for example nesting.
+      container.mounts:
+        type: list
+        elements: dict
+        description: Mount points of the container.
+      container.tags:
+        type: list
+        elements: str
+        description: Tags of the container.
