@@ -57,7 +57,7 @@ See the
 
 ## Roadmap
 
-<!-- Optional. Include the roadmap for this collection, and the proposed release/versioning strategy so users can anticipate the upgrade/update cycle. -->
+* [ ] make sure that correct mode gets set on the proxmox host in additional mountpoints if needed. E.g. for the mountpoint of the MariaDB backups
 
 ## More information
 
